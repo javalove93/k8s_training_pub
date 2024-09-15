@@ -1,7 +1,6 @@
-. ../00.setenv.sh
-
 CLUSTER_NAME=std-cluster-1
 PROJECT=$(gcloud config get project)
+REGION=asia-east1
 MACHINE_TYPE=e2-standard-4
 VERSION=--cluster-version 1.30.3-gke.1639000
 

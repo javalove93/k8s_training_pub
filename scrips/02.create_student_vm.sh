@@ -1,5 +1,5 @@
 PROJECT_ID=$(gcloud config get-value project)
-REGION=asia-northeast3
+REGION=asia-east1
 ZONE=$(gcloud compute zones list --format="value(name)" | grep $REGION | shuf -n 1)
 MACHINE_TYPE=e2-medium
 VM_NAME=k8s-bastion
