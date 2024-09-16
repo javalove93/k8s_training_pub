@@ -22,4 +22,4 @@ gcloud compute instances create $VM_NAME     --project=$PROJECT_ID     --zone=$Z
   --create-disk=auto-delete=yes,boot=yes,device-name=$VM_NAME,image=$IMAGE,mode=rw,size=$DISK_SIZE,type=projects/$PROJECT_ID/zones/$ZONE/diskTypes/pd-balanced     \
   --no-shielded-secure-boot     --shielded-vtpm     --shielded-integrity-monitoring     \
   --labels=goog-ec-src=vm_add-gcloud     --reservation-affinity=any \
-  --metadata-from-file ssh-keys=~/.ssh/id_rsa.pub
+  --metadata-from-file ssh-keys=`realpath ~/.ssh/id_rsa.pub`
