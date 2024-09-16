@@ -9,10 +9,17 @@ DISK_SIZE=30
 
 gcloud services --project $PROJECT_ID enable compute.googleapis.com container.googleapis.com
 
+# .ssh/id_rsa가 없으면 생성
+if [ ! -f ~/.ssh/id_rsa ]; then
+  ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
+fi
+
+# gcloud로 VM 생성하면서 ssh key를 등록
 gcloud compute instances create $VM_NAME     --project=$PROJECT_ID     --zone=$ZONE     \
   --machine-type=$MACHINE_TYPE     --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default     \
   --maintenance-policy=MIGRATE     --provisioning-model=STANDARD     \
   --scopes=https://www.googleapis.com/auth/cloud-platform     --tags=http-server,https-server     \
   --create-disk=auto-delete=yes,boot=yes,device-name=$VM_NAME,image=$IMAGE,mode=rw,size=$DISK_SIZE,type=projects/$PROJECT_ID/zones/$ZONE/diskTypes/pd-balanced     \
   --no-shielded-secure-boot     --shielded-vtpm     --shielded-integrity-monitoring     \
-  --labels=goog-ec-src=vm_add-gcloud     --reservation-affinity=any
+  --labels=goog-ec-src=vm_add-gcloud     --reservation-affinity=any \
+  --metadata-from-file ssh-keys=~/.ssh/id_rsa.pub
