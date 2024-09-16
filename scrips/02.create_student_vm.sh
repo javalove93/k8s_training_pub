@@ -15,7 +15,6 @@ if [ ! -f ~/.ssh/id_rsa ]; then
 fi
 
 # gcloud로 VM 생성하면서 ssh key를 등록
-$USERNAME=`gcloud auth list | grep ACCOUNT | awk '{print $2}' | sed -e "s/@/_/g" | sed -e "s/\./_/g"`
 gcloud compute instances create $VM_NAME     --project=$PROJECT_ID     --zone=$ZONE     \
   --machine-type=$MACHINE_TYPE     --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default     \
   --maintenance-policy=MIGRATE     --provisioning-model=STANDARD     \
@@ -23,4 +22,4 @@ gcloud compute instances create $VM_NAME     --project=$PROJECT_ID     --zone=$Z
   --create-disk=auto-delete=yes,boot=yes,device-name=$VM_NAME,image=$IMAGE,mode=rw,size=$DISK_SIZE,type=projects/$PROJECT_ID/zones/$ZONE/diskTypes/pd-balanced     \
   --no-shielded-secure-boot     --shielded-vtpm     --shielded-integrity-monitoring     \
   --labels=goog-ec-src=vm_add-gcloud     --reservation-affinity=any \
-  --metadata="ssh-keys=$USERNAME:$(cat ~/.ssh/id_rsa.pub)"
+  --metadata="ssh-keys=$USER:$(cat ~/.ssh/id_rsa.pub)"
