@@ -21,3 +21,11 @@ gcloud beta container --project "$PROJECT" clusters create "$CLUSTER_NAME" \
     --workload-pool "$PROJECT.svc.id.goog" --enable-shielded-nodes \
     --enable-l4-ilb-subsetting --enable-image-streaming \
     --node-locations "$REGION-c" --zone=$REGION-c $VERSION
+
+sudo apt install -y kubectl
+sudo apt install -y google-cloud-cli-gke-gcloud-auth-plugin
+sudo apt -y install kubectx
+
+gcloud container clusters get-credentials $CLUSTER_NAME --zone $REGION --project $PROJECT
+
+echo kubectx 명령으로 Kubernetes 클러스터를 확인하거나 변경할 수 있습니다.
