@@ -15,6 +15,7 @@ gcloud beta container --project "$PROJECT" clusters create "$CLUSTER_NAME" \
     --no-enable-intra-node-visibility --default-max-pods-per-node "110" \
     --security-posture=standard --workload-vulnerability-scanning=disabled \
     --no-enable-master-authorized-networks \
+    --spot \
     --addons HorizontalPodAutoscaling,HttpLoadBalancing,GcePersistentDiskCsiDriver,GcpFilestoreCsiDriver,GcsFuseCsiDriver \
     --enable-autoupgrade --enable-autorepair --max-surge-upgrade 1 --max-unavailable-upgrade 0 \
     --binauthz-evaluation-mode=DISABLED --enable-managed-prometheus \
@@ -22,10 +23,20 @@ gcloud beta container --project "$PROJECT" clusters create "$CLUSTER_NAME" \
     --enable-l4-ilb-subsetting --enable-image-streaming \
     --node-locations "$REGION-c" --zone=$REGION-c $VERSION
 
-sudo apt install -y kubectl
-sudo apt install -y google-cloud-cli-gke-gcloud-auth-plugin
-sudo apt -y install kubectx
+# kubectl이 설치되어 있지 않은 경우
+sudo apt update
+KUBECTL=`which kubectl`
+if [ -z $KUBECTL ]; then
+    sudo apt install -y kubectl
+    sudo apt install -y google-cloud-cli-gke-gcloud-auth-plugin
+    sudo apt -y install kubectx
+fi
 
 gcloud container clusters get-credentials $CLUSTER_NAME --zone $REGION --project $PROJECT
+
+cat << EOF >> ~/.bashrc
+alias k='kubectl '
+alias kget='kubectl get '
+EOF
 
 echo kubectx 명령으로 Kubernetes 클러스터를 확인하거나 변경할 수 있습니다.
