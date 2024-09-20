@@ -32,11 +32,14 @@ if [ -z $KUBECTL ]; then
     sudo apt -y install kubectx
 fi
 
-gcloud container clusters get-credentials $CLUSTER_NAME --zone $REGION --project $PROJECT
+gcloud container clusters get-credentials $CLUSTER_NAME --zone $REGION-c --project $PROJECT
 
+ALIAS=`tail -n 1 ~/.bashrc | grep kubectl`
+if [ -z $ALIAS ]; then
 cat << EOF >> ~/.bashrc
 alias k='kubectl '
 alias kget='kubectl get '
 EOF
+fi
 
 echo kubectx 명령으로 Kubernetes 클러스터를 확인하거나 변경할 수 있습니다.

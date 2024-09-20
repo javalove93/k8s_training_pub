@@ -21,6 +21,7 @@ chmod 700 .ssh
 echo $ID_RSA >> .ssh/authorized_keys
 chmod 600 .ssh/authorized_keys
 sudo apt -y install git
+echo set paste > ~/.vimrc
 EOF
 
 echo cat ~/.ssh/id_rsa
