@@ -7,7 +7,7 @@ VERSION="--cluster-version 1.30.3-gke.1639000"
 gcloud beta container --project "$PROJECT" clusters create "$CLUSTER_NAME" \
     --no-enable-basic-auth --release-channel "regular" \
     --machine-type "$MACHINE_TYPE" --image-type "COS_CONTAINERD" \
-    --disk-type "pd-balanced" --disk-size "100" \
+    --disk-type "pd-balanced" --disk-size "30" \
     --metadata disable-legacy-endpoints=true \
     --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
     --num-nodes "3" --logging=SYSTEM,WORKLOAD --monitoring=SYSTEM \
@@ -16,6 +16,7 @@ gcloud beta container --project "$PROJECT" clusters create "$CLUSTER_NAME" \
     --security-posture=standard --workload-vulnerability-scanning=disabled \
     --no-enable-master-authorized-networks \
     --spot \
+    --enable-network-policy \
     --addons HorizontalPodAutoscaling,HttpLoadBalancing,GcePersistentDiskCsiDriver,GcpFilestoreCsiDriver,GcsFuseCsiDriver \
     --enable-autoupgrade --enable-autorepair --max-surge-upgrade 1 --max-unavailable-upgrade 0 \
     --binauthz-evaluation-mode=DISABLED --enable-managed-prometheus \
@@ -24,9 +25,9 @@ gcloud beta container --project "$PROJECT" clusters create "$CLUSTER_NAME" \
     --node-locations "$REGION-c" --zone=$REGION-c $VERSION
 
 # kubectl이 설치되어 있지 않은 경우
-sudo apt update
 KUBECTL=`which kubectl`
 if [ -z $KUBECTL ]; then
+    sudo apt update
     sudo apt install -y kubectl
     sudo apt install -y google-cloud-cli-gke-gcloud-auth-plugin
     sudo apt -y install kubectx
@@ -34,8 +35,8 @@ fi
 
 gcloud container clusters get-credentials $CLUSTER_NAME --zone $REGION-c --project $PROJECT
 
-ALIAS=`tail -n 1 ~/.bashrc | grep kubectl`
-if [ -z $ALIAS ]; then
+ALIAS=`alias | grep kubectl | xargs`
+if [ -z "$ALIAS" ]; then
 cat << EOF >> ~/.bashrc
 alias k='kubectl '
 alias kget='kubectl get '
