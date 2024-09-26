@@ -2,8 +2,8 @@ CLUSTER_NAME=std-cluster-1
 PROJECT=$(gcloud config get project)
 REGION=asia-east1
 MACHINE_TYPE=e2-standard-4
-VERSION="--cluster-version 1.30.3-gke.1639000"
-
+# VERSION="--cluster-version 1.30.3-gke.1969001"
+    
 gcloud beta container --project "$PROJECT" clusters create "$CLUSTER_NAME" \
     --no-enable-basic-auth --release-channel "regular" \
     --machine-type "$MACHINE_TYPE" --image-type "COS_CONTAINERD" \
