@@ -7,7 +7,7 @@ MACHINE_TYPE=e2-standard-4
 gcloud beta container --project "$PROJECT" clusters create "$CLUSTER_NAME" \
     --no-enable-basic-auth --release-channel "regular" \
     --machine-type "$MACHINE_TYPE" --image-type "COS_CONTAINERD" \
-    --disk-type "pd-balanced" --disk-size "30" \
+    --disk-type "pd-balanced" --disk-size "60" \
     --metadata disable-legacy-endpoints=true \
     --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
     --num-nodes "3" --logging=SYSTEM,WORKLOAD --monitoring=SYSTEM \
