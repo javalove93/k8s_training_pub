@@ -1,0 +1,7 @@
+# FROM alpine
+FROM scratch
+WORKDIR /app
+COPY hello_world /app
+# RUN chmod +x /app/hello_world
+# ENV PATH="/app:${PATH}"
+CMD ["/app/hello_world"]

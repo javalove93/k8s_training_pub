@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-http-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-http-server
+  template:
+    metadata:
+      labels:
+        app: hello-http-server
+    spec:
+      containers:
+      - name: hello-http-server
+        image: javalove93/hello-http-server
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "0.5"
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+          - name: example-storage
+            mountPath: /mnt/data
+      volumes:
+      - name: example-storage
+        persistentVolumeClaim:
+          claimName: example-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: example-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: "standard"
+  volumeName: example-pv

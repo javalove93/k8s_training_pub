@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-and-exit
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-and-exit
+  template:
+    metadata:
+      labels:
+        app: hello-and-exit
+    spec:
+      containers:
+      - name: hello-and-exit
+        image: javalove93/hello
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "0.5"
+        ports:
+        - containerPort: 8080
+

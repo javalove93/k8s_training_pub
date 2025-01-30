@@ -1,0 +1,13 @@
+# Python 3 베이스 이미지 사용
+FROM python:3-slim
+
+# 작업 디렉토리 설정
+WORKDIR /app
+
+# 소스 코드 복사
+COPY src/* ./
+
+# Python 스크립트 실행
+CMD ["python", "flask-hello.py"]
+
+EXPOSE 8081

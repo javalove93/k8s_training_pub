@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-without-shell
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-without-shell
+  template:
+    metadata:
+      labels:
+        app: hello-without-shell
+    spec:
+      containers:
+      - name: hello-without-shell
+        image: javalove93/hello-without-shell
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "0.5"

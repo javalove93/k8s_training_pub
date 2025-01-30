@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-hello-world
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flask-hello-world
+  template:
+    metadata:
+      labels:
+        app: flask-hello-world
+    spec:
+      containers:
+      - name: flask-hello-world
+        image: javalove93/flask-hello-world
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "0.5"
+        ports:
+        - containerPort: 8080
+
