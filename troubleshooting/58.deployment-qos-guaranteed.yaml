@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-docker-guaranteed
+spec:
+  replicas: 40
+  selector:
+    matchLabels:
+      app: spring-boot-docker-guaranteed
+  template:
+    metadata:
+      labels:
+        app: spring-boot-docker-guaranteed
+    spec:
+      containers:
+      - name: spring-boot-docker-guaranteed
+        image: javalove93/spring-boot-docker-mem1g
+        resources:
+          requests:
+            memory: "1024Mi"
+            cpu: "0.1"
+        ports:
+        - containerPort: 8080
