@@ -1,0 +1,32 @@
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: memory-hog
+spec:
+  engineState: "active"
+  annotationCheck: "false"
+  appinfo:
+    appns: "default"
+    applabel: "app=spring-boot-docker"
+    appkind: "deployment"
+#  chaosServiceAccount: pod-memory-hog-sa
+  chaosServiceAccount: k8s-chaos-admin
+  experiments:
+  - name: pod-memory-hog-exec
+    spec:
+      components:
+        env:
+        # 메모리 소비량 (MB)
+        - name: MEMORY_CONSUMPTION
+          value: '1024'
+        # 카오스 지속 시간 (초)
+        - name: TOTAL_CHAOS_DURATION
+          value: '60'
+        - name: CONTAINER_RUNTIME
+          value: 'containerd'
+        - name: SOCKET_PATH
+          value: '/var/run/containerd/containerd.sock'
+        # 대상 컨테이너
+        - name: TARGET_CONTAINER
+          value: 'spring-boot-docker'
+

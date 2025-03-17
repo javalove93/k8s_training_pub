@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-docker
+  labels:
+    app: target
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spring-boot-docker
+  template:
+    metadata:
+      labels:
+        app: spring-boot-docker
+    spec:
+      containers:
+      - name: spring-boot-docker
+        image: javalove93/spring-boot-docker
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "0.5"
+          limits:
+            memory: "512Mi"
+            cpu: "1.0"
+        ports:
+        - containerPort: 8080
+
